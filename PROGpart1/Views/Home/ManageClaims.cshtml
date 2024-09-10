@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PROGpart1.Models.Claim>
+
+@{
+    ViewData["Title"] = "Manage Claims";
+}
+
+<h2>Manage Claims</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Lecturer Name</th>
+            <th>Submission Date</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Supporting Documents</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.LecturerName</td>
+                <td>@claim.SubmissionDate.ToShortDateString()</td>
+                <td>@claim.Status</td>
+                <td>@claim.Details</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(claim.SupportDocuments))
+                    {
+                        <a href="@Url.Content(claim.SupportDocuments)" target="_blank">View Document</a>
+                    }
+                </td>
+                <td>
+                    @if (claim.Status == "Pending")
+                    {
+                        <a href="@Url.Action("ApproveClaim", new { id = claim.Id })" class="btn btn-success">Approve</a>
+                        <a href="@Url.Action("RejectClaim", new { id = claim.Id })" class="btn btn-danger">Reject</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
